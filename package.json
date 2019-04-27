@@ -10,7 +10,7 @@
   },
   "homepage": "https://github.com/davidbarna/explicit-markdown#readme",
   "devDependencies": {
-    "@dal/lint-cli": "^0.2.1",
+    "@dal/lint-cli": "^0.2.3",
     "lerna": "^3.13.0"
   },
   "eslintConfig": {
