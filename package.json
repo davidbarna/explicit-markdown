@@ -1,7 +1,16 @@
 {
   "name": "root",
+  "scripts": {
+    "lint": "dal-lint ."
+  },
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidbarna/explicit-markdown.git"
+  },
+  "homepage": "https://github.com/davidbarna/explicit-markdown#readme",
   "devDependencies": {
+    "@dal/lint-cli": "^0.2.1",
     "lerna": "^3.13.0"
   }
 }
