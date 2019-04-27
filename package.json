@@ -12,5 +12,11 @@
   "devDependencies": {
     "@dal/lint-cli": "^0.2.1",
     "lerna": "^3.13.0"
-  }
+  },
+  "eslintConfig": {
+    "extends": [
+      "./node_modules/@dal/eslint-config/eslintrc.js"
+    ]
+  },
+  "prettier": "@dal/prettier-config"
 }
