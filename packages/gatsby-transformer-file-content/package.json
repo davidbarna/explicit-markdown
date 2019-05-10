@@ -1,0 +1,14 @@
+{
+  "name": "gatsby-transformer-file-content",
+  "version": "0.0.0",
+  "description": "Gatsby transformer to get raw content from files.",
+  "peerDdeependencies": {
+    "gatsby-source-filesystem": "^2.0.32"
+  },
+  "homepage": "https://github.com/davidbarna/explicit-markdown/tree/master/packages/gatsby-transformer-file-content#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidbarna/explicit-markdown.git"
+  },
+  "license": "MIT"
+}

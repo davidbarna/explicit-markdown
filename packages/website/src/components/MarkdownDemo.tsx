@@ -3,7 +3,13 @@ import Tabs from '@atlaskit/tabs';
 import styled from 'styled-components';
 import unified from 'unified';
 import markdown from 'remark-parse';
-import ReactJson from 'react-json-view';
+import SplitterLayout from 'react-splitter-layout';
+import MarkdownCodeProvider from './MarkdownCodeProvider';
+import 'react-splitter-layout/lib/index.css';
+import MarkdownCodeRaw from './MarkdownCodeRaw';
+import MarkdownAst from './MarkdownAst';
+import MarkdownToReact from './MarkdownToReact';
+import ExplicitMarkdown from './ExplicitMarkdown';
 
 const Padding = styled.div`
   padding: 20px;
@@ -15,8 +21,9 @@ const Grid = styled.div`
 `;
 
 const GridColumn = styled.div`
-  width: 50%;
   margin: 0 20px;
+  overflow: hidden;
+  width: 50%;
 `;
 
 interface TabData {
@@ -25,28 +32,54 @@ interface TabData {
 }
 
 const MarkdownDemo: React.SFC<{ children: string }> = ({
-  children,
+  children: code,
 }): JSX.Element => {
-  const mdast = unified()
+  const ast = unified()
     // @ts-ignore: no types for 'remark-parse'
     .use(markdown, { commonmark: true })
-    .parse(children);
+    .parse(code);
 
   const inputTabs: TabData[] = [
-    { label: 'Markdown', content: <Padding>{children}</Padding> },
     {
-      label: 'mdast',
+      label: 'Markdown',
       content: (
         <Padding>
-          <ReactJson src={mdast} />
+          <MarkdownCodeRaw />
+        </Padding>
+      ),
+    },
+    {
+      label: 'MDAST',
+      content: (
+        <Padding>
+          <MarkdownAst />
         </Padding>
       ),
     },
   ];
 
   const outputTabs: TabData[] = [
-    { label: 'Explicit Markdown', content: <Padding>One</Padding> },
-    { label: 'HTML', content: <Padding>Two</Padding> },
+    {
+      label: 'Explicit Markdown',
+      content: (
+        <Padding>
+          <ExplicitMarkdown />
+        </Padding>
+      ),
+    },
+    {
+      label: 'React Markdown',
+      content: (
+        <Padding>
+          <style scoped>
+            {`
+            @import "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css";
+           `}
+          </style>
+          <MarkdownToReact />
+        </Padding>
+      ),
+    },
   ];
 
   const [selected, setSelected] = useState([0, 0]);
@@ -58,22 +91,22 @@ const MarkdownDemo: React.SFC<{ children: string }> = ({
   };
 
   return (
-    <Grid>
-      <GridColumn medium={8}>
-        <Tabs
-          tabs={inputTabs}
-          onSelect={onInputSelect}
-          selected={inputTabs[selected[0]]}
-        />
-      </GridColumn>
-      <GridColumn medium={8}>
-        <Tabs
-          tabs={outputTabs}
-          onSelect={onOutputSelect}
-          selected={outputTabs[selected[1]]}
-        />
-      </GridColumn>
-    </Grid>
+    <MarkdownCodeProvider code={code}>
+      <div style={{ height: '100vh' }}>
+        <SplitterLayout>
+          <Tabs
+            tabs={inputTabs}
+            onSelect={onInputSelect}
+            selected={inputTabs[selected[0]]}
+          />
+          <Tabs
+            tabs={outputTabs}
+            onSelect={onOutputSelect}
+            selected={outputTabs[selected[1]]}
+          />
+        </SplitterLayout>
+      </div>
+    </MarkdownCodeProvider>
   );
 };
 
